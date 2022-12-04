@@ -58,8 +58,8 @@ const fileData = `LGOFNEIZBERESE(15x10)WREHFFHTWBHRRRU(53x15)(8x13)ZSLUBGUV(2x10
             expect(decompressor.lengthForNestedDecompression('(25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN')).toEqual(445);
         });
 
-        fit('should handle real input', () => {
-            expect(decompressor.lengthForNestedDecompression(fileData)).toEqual(445);
+        it('should handle real input', () => {
+            expect(decompressor.lengthForNestedDecompression(fileData)).toEqual(10780403063);
         });
     });
 });

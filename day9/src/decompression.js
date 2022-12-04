@@ -34,21 +34,21 @@ class Decompressor {
     }
 
     lengthForNestedDecompression(inputStr){
-        let markerMatcher = inputStr.match(/\((\d+)x(\d+)\)/);
+        const markerMatcher = inputStr.match(/\((\d+)x(\d+)\)/);
         if(!markerMatcher){
-            return 0;
+            return inputStr.length;
         }
-        let numCharsToRepeat = parseInt(markerMatcher[1]);
-        let timesToRepeat = markerMatcher[2];
-        let fullMarker = `(${numCharsToRepeat}x${timesToRepeat})`;
-        const firstMarkerLoc = inputStr.indexOf(fullMarker);
-        let firstSection = inputStr.substring(0, firstMarkerLoc + fullMarker.length + numCharsToRepeat);
-        let secondSection = inputStr.substring(firstMarkerLoc + fullMarker.length + numCharsToRepeat);
+        const numCharsToRepeat = parseInt(markerMatcher[1]);
+        const timesToRepeat = markerMatcher[2];
+            
+        const repeatInstructionsLocation = inputStr.indexOf(markerMatcher[0]);
+        const endOfInstruction = repeatInstructionsLocation + markerMatcher[0].length;
 
-        console.log('length of section before decompression: ' + firstSection.length);
-        const lengthOfFirstSection = this.decompressConsideringMarkersWithinMarkers(firstSection).length;
-        console.log('length of decompressed section: ' + lengthOfFirstSection);
-
-        return lengthOfFirstSection + this.lengthForNestedDecompression(secondSection);
+        return repeatInstructionsLocation 
+            + timesToRepeat * this.lengthForNestedDecompression(
+                inputStr.substring(endOfInstruction,endOfInstruction + numCharsToRepeat))
+            + this.lengthForNestedDecompression(inputStr.substring(endOfInstruction + numCharsToRepeat));
+      ;
+        
     }
 }
